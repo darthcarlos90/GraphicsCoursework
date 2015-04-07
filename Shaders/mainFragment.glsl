@@ -13,6 +13,8 @@ uniform float lightRadius;
 
 uniform int activateFog;
 
+uniform float fogValue;
+
 
 
 in Vertex{
@@ -69,7 +71,7 @@ void main(void){
 			tutorial located at: http://in2gpu.com/2014/07/22/create-fog-shader/
 		 */
 		float fogFactor = (1800 - fog_distance)/(1800 - 100);
-		
+		fogFactor = fogFactor/fogValue;
 		//clamping the fog factor
 		fogFactor = clamp( fogFactor, 0.0, 1.0 );
 		
@@ -80,6 +82,8 @@ void main(void){
 		temp_colour = vec4(colour * atten * lambert, diffuse.a);
 		temp_colour.rgb += (diffuse.rgb * lightColour.rgb) * 0.1;
 		
+		
+		
 		//the final output colour is given by the function mix, mixing the colour of the fog 
 		//(gray), the temp_colour with all our calculations, and the fog factor
 		gl_FragColor = mix(vec4(0.5, 0.5, 0.5, 1), temp_colour, fogFactor);
@@ -89,6 +93,6 @@ void main(void){
 		colour += (lightColour.rgb * sFactor) * 0.33;
 		gl_FragColor = vec4(colour * atten * lambert, diffuse.a);
 		gl_FragColor.rgb += (diffuse.rgb * lightColour.rgb) * 0.1;
-	 }
+	}
 	
 }

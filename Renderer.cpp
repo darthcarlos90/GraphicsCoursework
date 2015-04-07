@@ -207,6 +207,8 @@ Renderer::Renderer(Window &parent) : OGLRenderer(parent){
 	day = true;
 	rain_flag = true;
 	init = true;
+
+	fogValue = 0.0625f;
 }
 
 //destructor
@@ -736,9 +738,13 @@ void Renderer::DrawHeightMap(bool shadow_testing){
 		if(!day){
 			if(!rain_flag)
 				glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "activateFog"), 1);
+				glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "fogValue"), fogValue);
+				if(fogValue < 1) fogValue += 0.01;
 		} else {
 			glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "activateFog"), 0);
+			fogValue = 0.0625f;
 		}
+		
 	}
 
 	heightMap->Draw();
@@ -775,8 +781,11 @@ void Renderer::DrawWater(bool shadow_testing){
 		if(!day){
 			if(!rain_flag)
 				glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "activateFog"), 1);
+				glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "fogValue"), fogValue);
+				if (fogValue < 1) fogValue += 0.001;
 		} else {
 			glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "activateFog"), 0);
+			fogValue = 0.0625f;
 		}
 
 		UpdateShaderMatrices();
@@ -812,8 +821,11 @@ void Renderer::DrawNode(SceneNode* n, bool shadow_testing){
 		if(!day){
 			if(!rain_flag)
 				glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "activateFog"), 1);
+				glUniform1f(glGetUniformLocation(currentShader->GetProgram(), "fogValue"), fogValue);
+				if (fogValue < 1) fogValue += 0.001;
 		} else {
 			glUniform1i(glGetUniformLocation(currentShader->GetProgram(), "activateFog"), 0);
+			fogValue = 0.0625f;
 		}
 
 		n->Draw();

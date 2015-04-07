@@ -9,6 +9,7 @@ uniform vec3 lightPos;
 uniform float lightRadius;
 
 uniform int activateFog;
+uniform float fogValue;
 
 in Vertex {
 	vec3 colour;
@@ -58,13 +59,16 @@ void main(void){
 		//fog operations explained in the MainFragment.glsl file
 		float dist2 = gl_FragCoord.z / gl_FragCoord.w;
 		float fogFactor = (1800 - dist2)/(1800 - 100);
+		fogFactor = fogFactor/fogValue;
 		fogFactor = clamp( fogFactor, 0.0, 1.0 );
-		 vec4 temp_colour;
+		vec4 temp_colour;
 		
 		vec3 colour = (diffuse.rgb * lightColour.rgb);
 		colour += (lightColour.rgb * sFactor) * 0.33;
 		temp_colour = vec4(colour * atten * lambert, diffuse.a);
 		temp_colour.rgb += (diffuse.rgb * lightColour.rgb) * 0.1;
+		
+		
 		
 		gl_FragColor = mix(vec4(0.5, 0.5, 0.5, 1), temp_colour, fogFactor);
 	}

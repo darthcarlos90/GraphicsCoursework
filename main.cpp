@@ -6,7 +6,7 @@
 
 
 int main(void){
-	Window w("Coursework", 1000, 800, false);
+	Window w("Coursework", 800, 600, false);
 
 	if(!w.HasInitialised()){
 		std::cout << "The window couldn't be loaded!" << endl;

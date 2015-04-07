@@ -9,6 +9,7 @@ uniform vec3 lightPos;
 uniform vec3 cameraPos;
 uniform float lightRadius;
 uniform int activateFog;
+uniform float fogValue;
 
 in Vertex{
 	vec4 colour;
@@ -44,12 +45,15 @@ void main(void){
 	// fog explained on the mainFragment.glsl file
 		float dist2 = gl_FragCoord.z / gl_FragCoord.w;
 		float fogFactor = (1800 - dist2)/(1800 - 100);
+		fogFactor = fogFactor/fogValue;
 		fogFactor = clamp( fogFactor, 0.0, 1.0 );
 		 vec4 temp_colour;
 		        
 		
 		temp_colour.rgb = (lightColour.rgb*diffuse.rgb*atten*shadow) * (diffuse.rgb + reflection.rgb);
 		temp_colour.a = lightColour.a * diffuse.a;
+		
+		
 		
 		gl_FragColor = mix(vec4(0.5, 0.5, 0.5, 1), temp_colour, fogFactor);
 	}	

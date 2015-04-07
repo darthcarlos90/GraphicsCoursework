@@ -142,6 +142,8 @@ protected:
 	float height_water; // represents the height of the water
 	bool rain_flag;//sets wether its raining or not
 
+	float fogValue;
+	
 	//The nodes that are inside the frustum
 	vector<SceneNode*> visibleNodes;
 };
